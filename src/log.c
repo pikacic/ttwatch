@@ -19,7 +19,11 @@ void write_log(int error, const char *fmt, ...)
     va_start(va, fmt);
 
     if (log_location == LOG_CONSOLE)
-        vfprintf(error ? stderr : stdout, fmt, va);
+    {
+        FILE *stream = error ? stderr : stdout;
+        vfprintf(stream, fmt, va);
+        fflush(stream);
+    }
     else
     {
         FILE *file = fopen("/var/log/ttwatch/ttwatch.log", "a");
